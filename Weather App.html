@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Weather App</title>
+
+<style>
+
+body{
+    font-family: Arial;
+    background: linear-gradient(135deg,#5f9cff,#7be0ff);
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+.container{
+    background: rgba(255,255,255,0.15);
+    backdrop-filter: blur(10px);
+    padding:40px;
+    border-radius:15px;
+    text-align:center;
+    box-shadow:0 10px 25px rgba(0,0,0,0.3);
+    color:white;
+    width:300px;
+}
+
+h1{
+    margin-bottom:20px;
+}
+
+input{
+    padding:10px;
+    width:180px;
+    border:none;
+    border-radius:5px;
+}
+
+button{
+    padding:10px 15px;
+    margin-top:10px;
+    border:none;
+    border-radius:5px;
+    background:#ffffff;
+    cursor:pointer;
+    font-weight:bold;
+}
+
+button:hover{
+    background:#f0f0f0;
+}
+
+.weather-icon{
+    width:80px;
+    margin-top:15px;
+}
+
+.temp{
+    font-size:28px;
+    font-weight:bold;
+}
+
+</style>
+
+</head>
+<body>
+
+<div class="container">
+
+<h1>Weather App</h1>
+
+<input type="text" id="locationInput" placeholder="Enter city">
+
+<br>
+
+<button onclick="getWeather()">Check Weather</button>
+
+<div id="weatherResult">
+
+<h2 id="city"></h2>
+
+<img id="icon" class="weather-icon">
+
+<p class="temp" id="temp"></p>
+
+<p id="condition"></p>
+
+</div>
+
+</div>
+
+
+<script>
+
+let apiKey = "7e315978295b425aa00190135260903";
+
+async function getWeather(city){
+
+if(!city){
+city = document.getElementById("locationInput").value;
+}
+
+let url = `https://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${city}&aqi=yes`;
+
+let response = await fetch(url);
+let data = await response.json();
+
+document.getElementById("city").innerText =
+data.location.name + ", " + data.location.country;
+
+document.getElementById("temp").innerText =
+data.current.temp_c + " °C";
+
+document.getElementById("condition").innerText =
+data.current.condition.text;
+
+document.getElementById("icon").src =
+"https:" + data.current.condition.icon;
+
+}
+
+window.onload = function(){
+getWeather("Ambala");
+}
+</script>
+
+</body>
+</html>
